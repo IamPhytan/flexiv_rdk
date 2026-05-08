@@ -10,3 +10,6 @@ build*/
 cloned/
 html/
 __pycache__
+# pixi environments
+.pixi/*
+!.pixi/config.toml
