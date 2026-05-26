@@ -3,8 +3,27 @@ authors = ["Damien LaRocque <damien.larocque@sereact.ai>"]
 channels = ["conda-forge"]
 name = "flexiv_rdk"
 platforms = ["linux-64"]
-version = "0.1.0"
+preview = ["pixi-build"]
 
 [tasks]
 
 [dependencies]
+flexiv_rdk = { path = "." }
+
+[package.host-dependencies]
+spdlog = "==1.9.2"
+fast-dds = { git = "https://github.com/IamPhytan/Fast-DDS.git", branch = "pixi" }
+fast-cdr = { git = "https://github.com/IamPhytan/Fast-CDR.git", branch = "pixi" }
+RBDyn = { git = "https://github.com/IamPhytan/RBDyn.git", branch = "pixi" }
+SpaceVecAlg = { git = "https://github.com/IamPhytan/SpaceVecAlg.git", branch = "pixi" }
+boost = ">=1.85.0,<2"
+
+[package]
+name = "flexiv_rdk"
+version = "0.1.0"
+
+[package.build]
+backend = { name = "pixi-build-cmake", version = "0.*" }
+
+[package.build.config]
+extra-args = ["-DCMAKE_BUILD_TYPE=Release"]
