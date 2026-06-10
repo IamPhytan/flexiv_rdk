@@ -5,10 +5,18 @@ name = "flexiv_rdk"
 platforms = ["linux-64"]
 preview = ["pixi-build"]
 
-[tasks]
-
 [dependencies]
 flexiv_rdk = { path = "." }
+cmake = "*"
+ninja = "*"
+c-compiler = "*"
+cxx-compiler = "*"
+fast-dds = { git = "https://github.com/IamPhytan/Fast-DDS.git", branch = "pixi" }
+fast-cdr = { git = "https://github.com/IamPhytan/Fast-CDR.git", branch = "pixi" }
+RBDyn = { git = "https://github.com/IamPhytan/RBDyn.git", branch = "pixi" }
+SpaceVecAlg = { git = "https://github.com/IamPhytan/SpaceVecAlg.git", branch = "pixi" }
+boost = ">=1.85.0,<2"
+sysroot_linux-64 = ">=2.34"
 
 [package.host-dependencies]
 spdlog = "==1.9.2"
@@ -27,3 +35,18 @@ backend = { name = "pixi-build-cmake", version = "0.*" }
 
 [package.build.config]
 extra-args = ["-DCMAKE_BUILD_TYPE=Release"]
+
+
+[tasks]
+# build-examples = { cmd = "cmake .. ", cwd = "build/" }
+
+[tasks.configure-examples]
+cmd = ["cmake", "-S", "example", "-B", "example/build", "-G", "Ninja"]
+description = "Configure Flexiv RDK C++ examples"
+
+[tasks.build-examples]
+cmd = "cmake --build . --config Release -j {{ JOBS }}"
+args = [{ arg = "JOBS", default = "4" }]
+cwd = "example/build"
+depends-on = ["configure-examples"]
+description = "Build Flexiv RDK C++ examples"
